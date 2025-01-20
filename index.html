@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Technical Documentation</title>
+        <!-- Add marked library from CDN -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+        <!-- Add highlight.js for code syntax highlighting -->
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 1.5rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-item.active {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        /* Documentation Styles */
+        .markdown-content h1 {
+            font-size: 2em;
+            border-bottom: 1px solid #eaecef;
+            margin-bottom: 1em;
+            padding-bottom: 0.3em;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.5em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+
+        .markdown-content h3 {
+            font-size: 1.25em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .markdown-content p {
+            margin: 1em 0;
+        }
+
+        .markdown-content code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-content pre {
+            background: #f6f8fa;
+            padding: 1em;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+
+        .markdown-content th {
+            background: #f6f8fa;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    </head>
+    <body>
+        <header>
+            <h1>Technical Documentation</h1>
+        </header>
+
+        <div class="container">
+            <div class="layout">
+                <aside class="sidebar">
+                    <input type="text" class="search-box"
+                        placeholder="Search..." id="search">
+                    <nav id="nav">
+                        <a class="nav-item active" data-doc="add-path">Add Path
+                            Component</a>
+                        <a class="nav-item" data-doc="websocket">WebSocket
+                            Refresh</a>
+                    </nav>
+                </aside>
+
+                <main class="content">
+                    <div id="content" class="markdown-content"></div>
+                </main>
+            </div>
+        </div>
+
+        <script>
+        // Configure marked with syntax highlighting
+        marked.setOptions({
+            highlight: function(code, lang) {
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+
+        // Documentation content
+        const docs = {
+
+
+            'add-path': ` # AddPathComponent Documentation
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Examples](#examples)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
+
+## Overview
+
+The \`AddPathComponent\` is a sophisticated Angular component designed for path management and visualization using Google Maps. It provides functionality for creating, modifying, and managing paths with support for multiple creation modes and travel types.
+
+### Core Functionality
+
+- Path creation and management
+- Google Maps integration
+- Multiple travel mode support
+- KML file import/export
+- Interactive point management
+
+## Features
+
+### 1. Multiple Path Creation Modes
+
+#### Create Path Mode
+
+Manual path creation through point selection:
+
+\`\`\`typescript
+setMode("createPath");
+// Enables direct point placement on map
+\`\`\`
+
+#### Generate Path Mode
+
+Automated path generation between points:
+
+\`\`\`typescript
+setMode("generatePath");
+// Enables start/end point selection with automatic path generation
+\`\`\`
+
+#### Import Path Mode
+
+Support for KML file imports:
+
+\`\`\`typescript
+// File input handling
+changeFile(event) {
+  const files: FileList = event.srcElement.files;
+  this.readFile(files[0]);
+}
+\`\`\`
+
+### 2. Travel Modes
+
+Supports multiple Google Maps travel modes:
+
+- DRIVING
+- WALKING
+- BICYCLING
+
+\`\`\`typescript
+changeTravelMode(mode: google.maps.TravelMode) {
+  this.defaultTravelmode = mode;
+  this.generatePath();
+}
+\`\`\`
+
+## Installation
+
+### Prerequisites
+
+- Angular 17+
+- Google Maps JavaScript API
+- @angular/google-maps package
+
+### Required Dependencies
+
+\`\`\`json
+{
+  "dependencies": {
+    "@angular/google-maps": "^x.x.x",
+    "@angular/material": "^x.x.x",
+    "@ngx-translate/core": "^x.x.x"
+  }
+}
+\`\`\`
+
+### Component Integration
+
+\`\`\`typescript
+import { AddPathComponent } from './components/add-path/add-path.component';
+
+@NgModule({
+  declarations: [AddPathComponent],
+  exports: [AddPathComponent]
+})
+\`\`\`
+
+## Usage
+
+### Basic Implementation
+
+1. Template Usage:
+
+\`\`\`html
+<locatify-add-path
+  [tour]="tourData"
+  [addPathSubject]="pathSubject"
+  (colorChange)="onColorChange($event)"
+  (saveTour)="onSaveTour()"
+  (close)="onClose()"
+>
+</locatify-add-path>
+\`\`\`
+
+2. Component Integration:
+
+\`\`\`typescript
+export class ParentComponent {
+  tourData: Tour;
+  pathSubject = new Subject<any>();
+
+  onColorChange(color: string) {
+    // Handle color change
+  }
+
+  onSaveTour() {
+    // Handle save
+  }
+}
+\`\`\`
+
+## API Reference
+
+### Inputs
+
+| Input          | Type            | Description                    |
+| -------------- | --------------- | ------------------------------ |
+| tour           | Tour            | Tour configuration object      |
+| addPathSubject | Observable<any> | Subject for adding path points |
+
+### Outputs
+
+| Output      | Type         | Description              |
+| ----------- | ------------ | ------------------------ |
+| colorChange | EventEmitter | Emits on color changes   |
+| saveTour    | EventEmitter | Emits on tour save       |
+| close       | EventEmitter | Emits on component close |
+
+### Methods
+
+#### Public Methods
+
+\`\`\`typescript
+setMode(mode: CreatePathMode): void
+// Sets the current path creation mode
+
+generatePath(): void
+// Generates path between selected points
+
+addDestination(): void
+// Adds waypoint to current path
+
+bulkCreate(): void
+// Creates multiple path points
+
+clearSelection(): void
+// Resets all selections
+\`\`\`
+
+#### Private Methods
+
+\`\`\`typescript
+private resetPaths(): void
+// Resets path data
+
+private handleCreatePathMode(path: Path): void
+// Handles path creation in create mode
+
+private handleGeneratePathMode(path: Path): void
+// Handles path creation in generate mode
+\`\`\`
+
+## Examples
+
+### 1. Basic Path Creation
+
+\`\`\`typescript
+// Component
+export class MyComponent {
+  @ViewChild(AddPathComponent) addPath: AddPathComponent;
+
+  createSimplePath() {
+    this.addPath.setMode("createPath");
+    // Ready for point selection
+  }
+}
+\`\`\`
+
+### 2. Automated Path Generation
+
+\`\`\`typescript
+// Generate path between two points
+const startPoint = { lat: 40.7128, lng: -74.006 };
+const endPoint = { lat: 40.7614, lng: -73.9776 };
+
+this.addPath.startPoint = startPoint;
+this.addPath.endPoint = endPoint;
+this.addPath.generatePath();
+\`\`\`
+
+### 3. File Import
+
+\`\`\`typescript
+// Template
+<input type="file" (change)="addPath.changeFile($event)" accept=".kml">
+
+// Component
+handleFileImport(event: Event) {
+  this.addPath.setMode('importPath');
+  this.addPath.changeFile(event);
+}
+\`\`\`
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Path Generation Fails**
+
+   - Verify API key configuration
+   - Check coordinate validity
+   - Ensure network connectivity
+
+2. **File Import Issues**
+
+   - Verify file format (KML only)
+   - Check file size limits
+   - Validate coordinate format
+
+3. **Performance Issues**
+   - Implement path point limiting
+   - Use debouncing for updates
+   - Optimize render cycles
+
+### Debug Tips
+
+1. Enable console logging:
+
+\`\`\`typescript
+private debugMode = true;
+
+private log(message: string) {
+  if (this.debugMode) {
+    console.log('[AddPath]: \${message}');
+  }
+}
+\`\`\`
+
+2. Monitor state changes:
+
+\`\`\`typescript
+@Input() set tour(value: Tour) {
+  this.log('Tour updated: \${JSON.stringify(value)}');
+  this._tour = value;
+}
+\`\`\`
+`,
+            
+      
+
+         'websocket': `# WebSocket Refresh Feature Documentation
+
+## Overview
+
+The WebSocket Refresh feature implements real-time project synchronization with automatic refresh handling and user confirmation. This feature ensures that project data remains synchronized across multiple sessions while providing a smooth user experience.
+
+## Key Concepts
+
+- Real-time synchronization via WebSocket
+- Debounced refresh to prevent overload
+- User confirmation through dialog
+- Automatic route and point updates
+- Proper cleanup and resource management
+
+## Implementation
+
+### 1. Core Properties
+
+\`\`\`typescript
+private refreshTrigger = new Subject<void>();
+private refreshTimer: Subscription | null = null;
+private readonly REFRESH_COOLDOWN = 2000; // 2 seconds cooldown
+private isRefreshPending = false;
+\`\`\`
+
+### 2. WebSocket Connection Setup
+
+\`\`\`typescript
+private initializeWebSocketRefresh() {
+  this.webSocketRefresh = this.webSocketService.instantProjectId
+    .pipe(
+      filter(value => value === this.tour?.id),  // Only handle relevant updates
+      tap(() => this.refreshTrigger.next())      // Trigger refresh workflow
+    )
+    .subscribe();
+}
+\`\`\`
+
+### 3. Refresh Handler Setup
+
+\`\`\`typescript
+private initializeRefreshHandler() {
+  this.refreshTrigger
+    .pipe(
+      debounceTime(this.REFRESH_COOLDOWN),     // Prevent rapid refreshes
+      filter(() => !this.isRefreshPending)      // Prevent multiple dialogs
+    )
+    .subscribe(() => this.showRefreshDialog());
+}
+\`\`\`
+
+### 4. Dialog Management
+
+\`\`\`typescript
+private showRefreshDialog() {
+  if (this.isRefreshPending) return;
+
+  this.isRefreshPending = true;
+  this.dialog.open(CustomConfirmModalComponent, {
+    ...customConfirmModalstyle,
+    data: this.getDialogConfig(),
+    disableClose: true
+  })
+  .afterClosed()
+  .pipe(
+    switchMap(confirmed => this.handleDialogResponse(confirmed)),
+    finalize(() => this.isRefreshPending = false)
+  )
+  .subscribe();
+}
+\`\`\`
+
+### 5. Data Refresh Flow
+
+\`\`\`typescript
+private handleDialogResponse(confirmed: boolean) {
+  if (!confirmed) return EMPTY;
+  return this.refreshProjectData().pipe(
+    tap(() => this.updateProjectStatus())
+  );
+}
+
+private refreshProjectData() {
+  return this.pointService.getPoints(this.tour.id).pipe(
+    map(res => this.updateRouteAndPoints(res)),
+    catchError(error => {
+      console.error('Error refreshing points:', error);
+      return EMPTY;
+    })
+  );
+}
+\`\`\`
+
+### 6. Route and Status Updates
+
+\`\`\`typescript
+private updateRouteAndPoints(points: any) {
+  const currentParams = { ...this.route.snapshot.queryParams };
+  this.handleWayPoints(points);
+  this.updateRouteParams(currentParams);
+  this.pointService.reloadPoint.next(true);
+  return points;
+}
+
+private updateProjectStatus() {
+  this.projectService.isProjectRefreshed.next(true);
+  this.refreshTourInfo();
+}
+\`\`\`
+
+## Usage Guide
+
+### Basic Setup
+
+1. Initialize in component:
+
+\`\`\`typescript
+ngOnInit() {
+  this.initializeWebSocketRefresh();
+  this.initializeRefreshHandler();
+}
+\`\`\`
+
+2. Implement cleanup:
+
+\`\`\`typescript
+ngOnDestroy() {
+  this.cleanup();
+}
+
+private cleanup() {
+  this.refreshTrigger.complete();
+  if (this.refreshTimer) {
+    this.refreshTimer.unsubscribe();
+  }
+  if (this.webSocketRefresh) {
+    this.webSocketRefresh.unsubscribe();
+  }
+}
+\`\`\`
+
+## Common Issues and Solutions
+
+### 1. Multiple Refresh Dialogs
+
+**Problem**: Multiple dialogs appearing simultaneously
+**Solution**: Use isRefreshPending flag and proper cleanup
+
+\`\`\`typescript
+if (this.isRefreshPending) return;
+this.isRefreshPending = true;
+// ... handle refresh
+\`\`\`
+
+### 2. Memory Leaks
+
+**Problem**: Subscriptions not properly cleaned up
+**Solution**: Implement thorough cleanup
+
+\`\`\`typescript
+private cleanup() {
+  this.refreshTrigger.complete();
+  this.webSocketRefresh?.unsubscribe();
+  this.refreshTimer?.unsubscribe();
+}
+\`\`\`
+
+### 3. Missed Updates
+
+**Problem**: Updates not being processed
+**Solution**: Verify filter conditions and subscription setup
+
+\`\`\`typescript
+// Ensure proper filter conditions
+filter((value) => value === this.tour?.id);
+\`\`\`
+
+## Debug Tips
+
+### 1. Add Logging
+
+\`\`\`typescript
+private log(message: string) {
+  console.log('[WebSocket Refresh]: \${message}');
+}
+\`\`\`
+
+### 2. Track State Changes
+
+\`\`\`typescript
+private updateRefreshState(state: boolean) {
+  this.log(\`Refresh pending: \${state}\`);
+  this.isRefreshPending = state;
+}
+\`\`\`
+
+## Configuration Options
+
+\`\`\`typescript
+const CONFIG = {
+  REFRESH_COOLDOWN: 2000, // Debounce time in ms
+  RETRY_ATTEMPTS: 3, // Number of refresh attempts
+  AUTO_REFRESH: false, // Skip confirmation dialog
+};
+\`\`\`
+
+## API Reference
+
+### Core Methods
+
+| Method                     | Description                  |
+| -------------------------- | ---------------------------- |
+| initializeWebSocketRefresh | Sets up WebSocket connection |
+| initializeRefreshHandler   | Configures refresh workflow  |
+| showRefreshDialog          | Manages user confirmation    |
+| handleDialogResponse       | Processes user response      |
+| refreshProjectData         | Fetches updated data         |
+| updateRouteAndPoints       | Updates UI with new data     |
+
+### Events
+
+| Event              | Description                  |
+| ------------------ | ---------------------------- |
+| refreshTrigger     | Signals need for refresh     |
+| isProjectRefreshed | Indicates successful refresh |
+
+## Dependencies
+
+- Angular Material Dialog
+- RxJS Operators
+- WebSocket Service
+- Project Service
+- Point Service
+
+`
+        };
+
+        // Initialize
+        let currentDoc = 'add-path';
+
+        // Wait for document to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize syntax highlighting
+            hljs.highlightAll();
+            
+            // Initial content update
+            updateContent();
+
+            // Event Listeners
+            document.getElementById('nav').addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-item')) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    currentDoc = e.target.dataset.doc;
+                    updateContent();
+                }
+            });
+
+            document.getElementById('search').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const items = document.querySelectorAll('.nav-item');
+                
+                items.forEach(item => {
+                    const docId = item.dataset.doc;
+                    const content = docs[docId].toLowerCase();
+                    if (content.includes(query) || docId.includes(query)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function updateContent() {
+            const content = document.getElementById('content');
+            content.innerHTML = marked.parse(docs[currentDoc] || '');
+            // Highlight code blocks in the new content
+            content.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+        }
+    </script>
+    </body>
+</html>
