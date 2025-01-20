@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Technical Documentation</title>
-        <!-- Add marked library from CDN -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
-        <!-- Add highlight.js for code syntax highlighting -->
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-        <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation</title>
+    <!-- Add marked library from CDN -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <!-- Add highlight.js for code syntax highlighting -->
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -169,32 +169,34 @@
             }
         }
     </style>
-    </head>
-    <body>
-        <header>
-            <h1>Technical Documentation</h1>
-        </header>
+  </head>
+  <body>
+    <header>
+      <h1>Technical Documentation</h1>
+    </header>
 
-        <div class="container">
-            <div class="layout">
-                <aside class="sidebar">
-                    <input type="text" class="search-box"
-                        placeholder="Search..." id="search">
-                    <nav id="nav">
-                        <a class="nav-item active" data-doc="add-path">Add Path
-                            Component</a>
-                        <a class="nav-item" data-doc="websocket">WebSocket
-                            Refresh</a>
-                    </nav>
-                </aside>
+    <div class="container">
+      <div class="layout">
+        <aside class="sidebar">
+          <input type="text" class="search-box"
+            placeholder="Search..." id="search">
+          <nav id="nav">
+            <a class="nav-item active" data-doc="add-path">Add Path
+              Component</a>
+            <a class="nav-item" data-doc="websocket">WebSocket
+              Refresh</a><a class="nav-item" data-doc="angular_19_setup">
+              Angular 19 Setup
+            </a>
+          </nav>
+        </aside>
 
-                <main class="content">
-                    <div id="content" class="markdown-content"></div>
-                </main>
-            </div>
-        </div>
+        <main class="content">
+          <div id="content" class="markdown-content"></div>
+        </main>
+      </div>
+    </div>
 
-        <script>
+    <script>
         // Configure marked with syntax highlighting
         marked.setOptions({
             highlight: function(code, lang) {
@@ -721,7 +723,50 @@ const CONFIG = {
 - Point Service
 
 `
-        };
+      ,
+    
+      'angular_19_setup': `# Guide for Setting Up the Project after Upgrading to Angular 19
+
+This document provides a step-by-step guide for developers to set up the project on their local machines after the upgrade to Angular 19. Follow these instructions to ensure compatibility with the updated project.
+
+---
+
+## Steps to Re-Setup the Project
+
+### Install Angular CLI Globally (Version 19)
+\`\`\`bash
+run 'npm install -g @angular/cli@19'
+\`\`\`
+
+### Pull the Latest Changes from the Main Branch
+\`\`\`bash
+
+run 'git pull origin new-angular-version'
+\`\`\`
+
+### Remove Existing Node Modules
+
+remove package-lock.json file
+
+### Remove Existing Node Modules
+\`\`\`bash
+
+run 'rm -rf node_modules'
+\`\`\`
+
+
+### Install Updated Dependencies
+\`\`\`bash
+
+run 'npm install'
+\`\`\`
+
+---
+
+These steps will ensure your local environment is correctly set up to work with the upgraded Angular 19 project.
+`
+    
+    };
 
         // Initialize
         let currentDoc = 'add-path';
@@ -751,6 +796,8 @@ const CONFIG = {
                 const items = document.querySelectorAll('.nav-item');
                 
                 items.forEach(item => {
+                  console.log(item.dataset.doc);
+                  
                     const docId = item.dataset.doc;
                     const content = docs[docId].toLowerCase();
                     if (content.includes(query) || docId.includes(query)) {
@@ -771,5 +818,5 @@ const CONFIG = {
             });
         }
     </script>
-    </body>
+  </body>
 </html>
