@@ -1,175 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Technical Documentation</title>
     <!-- Add marked library from CDN -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <!-- Add highlight.js for code syntax highlighting -->
-    <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css" />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f5f5f5;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
 
-        header {
-            background: #fff;
-            padding: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
+      header {
+        background: #fff;
+        padding: 1rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
 
-        header h1 {
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 1.5rem;
-        }
+      header h1 {
+        max-width: 1200px;
+        margin: 0 auto;
+        font-size: 1.5rem;
+      }
 
+      .layout {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 2rem;
+      }
+
+      .sidebar {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+      }
+
+      .content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-item {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: #333;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+      }
+
+      .nav-item:hover {
+        background: #f0f0f0;
+      }
+
+      .nav-item.active {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+
+      .search-box {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+      }
+
+      /* Documentation Styles */
+      .markdown-content h1 {
+        font-size: 2em;
+        border-bottom: 1px solid #eaecef;
+        margin-bottom: 1em;
+        padding-bottom: 0.3em;
+      }
+
+      .markdown-content h2 {
+        font-size: 1.5em;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+        border-bottom: 1px solid #eaecef;
+        padding-bottom: 0.3em;
+      }
+
+      .markdown-content h3 {
+        font-size: 1.25em;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+      }
+
+      .markdown-content p {
+        margin: 1em 0;
+      }
+
+      .markdown-content code {
+        background: #f6f8fa;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 0.9em;
+      }
+
+      .markdown-content pre {
+        background: #f6f8fa;
+        padding: 1em;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 1em 0;
+      }
+
+      .markdown-content pre code {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .markdown-content table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+      }
+
+      .markdown-content th,
+      .markdown-content td {
+        border: 1px solid #dfe2e5;
+        padding: 6px 13px;
+      }
+
+      .markdown-content th {
+        background: #f6f8fa;
+      }
+
+      .markdown-content ul,
+      .markdown-content ol {
+        margin: 1em 0;
+        padding-left: 2em;
+      }
+
+      @media (max-width: 768px) {
         .layout {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 2rem;
+          grid-template-columns: 1fr;
         }
-
-        .sidebar {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            height: fit-content;
-        }
-
-        .content {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .nav-item {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-        }
-
-        .nav-item:hover {
-            background: #f0f0f0;
-        }
-
-        .nav-item.active {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-
-        /* Documentation Styles */
-        .markdown-content h1 {
-            font-size: 2em;
-            border-bottom: 1px solid #eaecef;
-            margin-bottom: 1em;
-            padding-bottom: 0.3em;
-        }
-
-        .markdown-content h2 {
-            font-size: 1.5em;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            border-bottom: 1px solid #eaecef;
-            padding-bottom: 0.3em;
-        }
-
-        .markdown-content h3 {
-            font-size: 1.25em;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-        }
-
-        .markdown-content p {
-            margin: 1em 0;
-        }
-
-        .markdown-content code {
-            background: #f6f8fa;
-            padding: 0.2em 0.4em;
-            border-radius: 3px;
-            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-            font-size: 0.9em;
-        }
-
-        .markdown-content pre {
-            background: #f6f8fa;
-            padding: 1em;
-            border-radius: 6px;
-            overflow-x: auto;
-            margin: 1em 0;
-        }
-
-        .markdown-content pre code {
-            background: transparent;
-            padding: 0;
-            border-radius: 0;
-        }
-
-        .markdown-content table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1em 0;
-        }
-
-        .markdown-content th,
-        .markdown-content td {
-            border: 1px solid #dfe2e5;
-            padding: 6px 13px;
-        }
-
-        .markdown-content th {
-            background: #f6f8fa;
-        }
-
-        .markdown-content ul,
-        .markdown-content ol {
-            margin: 1em 0;
-            padding-left: 2em;
-        }
-
-        @media (max-width: 768px) {
-            .layout {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
   </head>
+
   <body>
     <header>
       <h1>Technical Documentation</h1>
@@ -178,15 +181,20 @@
     <div class="container">
       <div class="layout">
         <aside class="sidebar">
-          <input type="text" class="search-box"
-            placeholder="Search..." id="search">
+          <input
+            type="text"
+            class="search-box"
+            placeholder="Search..."
+            id="search" />
           <nav id="nav">
             <a class="nav-item active" data-doc="add-path">Add Path
               Component</a>
-            <a class="nav-item" data-doc="websocket">WebSocket
-              Refresh</a><a class="nav-item" data-doc="angular_19_setup">
+            <a class="nav-item" data-doc="websocket">WebSocket Refresh</a>
+            <a class="nav-item" data-doc="angular_19_setup">
               Angular 19 Setup
             </a>
+            <a class="nav-item" data-doc="point-service"> Point Service (State
+              management && Queue) </a>
           </nav>
         </aside>
 
@@ -197,20 +205,22 @@
     </div>
 
     <script>
-        // Configure marked with syntax highlighting
-        marked.setOptions({
-            highlight: function(code, lang) {
-                return hljs.highlightAuto(code).value;
-            },
-            breaks: true,
-            gfm: true
-        });
+      window.addEventListener("offline", () => {
+        console.log('offli');
+        
+      })
+      // Configure marked with syntax highlighting
+      marked.setOptions({
+        highlight: function (code, lang) {
+          return hljs.highlightAuto(code).value;
+        },
+        breaks: true,
+        gfm: true,
+      });
 
-        // Documentation content
-        const docs = {
-
-
-            'add-path': ` # AddPathComponent Documentation
+      // Documentation content
+      const docs = {
+        "add-path": ` # AddPathComponent Documentation
 
 ## Table of Contents
 
@@ -485,10 +495,8 @@ private log(message: string) {
 }
 \`\`\`
 `,
-            
-      
 
-         'websocket': `# WebSocket Refresh Feature Documentation
+        websocket: `# WebSocket Refresh Feature Documentation
 
 ## Overview
 
@@ -722,10 +730,8 @@ const CONFIG = {
 - Project Service
 - Point Service
 
-`
-      ,
-    
-      'angular_19_setup': `# Guide for Setting Up the Project after Upgrading to Angular 19
+`,
+        angular_19_setup: `# Guide for Setting Up the Project after Upgrading to Angular 19
 
 This document provides a step-by-step guide for developers to set up the project on their local machines after the upgrade to Angular 19. Follow these instructions to ensure compatibility with the updated project.
 
@@ -770,59 +776,345 @@ run 'npm install'
 ---
 
 These steps will ensure your local environment is correctly set up to work with the upgraded Angular 19 project.
-`
-    
-    };
+`,
+        "point-service": `# PointService Documentation
 
-        // Initialize
-        let currentDoc = 'add-path';
+## Overview
+The PointService is an Angular injectable service that manages waypoints for tours. It handles CRUD operations for waypoints, manages state using BehaviorSubjects, and implements a queue system for handling point updates.
 
-        // Wait for document to be fully loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize syntax highlighting
-            hljs.highlightAll();
-            
-            // Initial content update
+## Dependencies
+- @angular/common/http: For HTTP requests
+- @angular/core: For dependency injection
+- rxjs: For reactive programming features
+- Environment configuration
+- OfflineApiService
+- ToastrTranslationServiceService
+- WebSocketService
+
+## Service Properties
+
+### Observables
+\`\`\`typescript
+
+ pointsSubject: BehaviorSubject<WayPoint[]> // Manages the current state of waypoints
+ selectedLanguage: BehaviorSubject<Language> // Tracks the selected language
+ reloadPoint: BehaviorSubject<boolean> // Triggers point reloading
+\`\`\`
+
+### Queue System
+\`\`\`typescript
+ pointQueue$: Subject: // Handles point update operations
+ contentQueue$: Subject: // Handles content update operations
+ queue$: Subject: // Main queue for managing all update operations
+\`\`\`
+
+## Methods
+
+### State Management
+
+### Overview
+The PointService implements a robust state management system using RxJS BehaviorSubjects. This system maintains the current state of waypoints, selected language, and reload triggers while ensuring data consistency across the application.
+
+### State Properties
+
+#### BehaviorSubjects
+\`\`\`typescript
+pointsSubject = new BehaviorSubject<WayPoint[]>([])
+selectedLanguage = new BehaviorSubject<Language>(null)
+reloadPoint = new BehaviorSubject(false)
+\`\`\`
+
+### State Update Patterns
+
+#### Direct State Updates
+\`\`\`typescript
+loadPoints(points: WayPoint[]): void {
+    this.pointsSubject.next(points);
+}
+\`\`\`
+Directly updates the entire waypoints collection.
+
+#### Incremental State Updates
+
+1. **Adding Points**
+\`\`\`typescript
+// Inside addPoint method
+this.pointsSubject.next([...this.pointsSubject.getValue(), newPoint]);
+\`\`\`
+
+2. **Updating Points**
+\`\`\`typescript
+// Inside updatePoint method
+const points = this.pointsSubject.getValue();
+const index = points.findIndex(p => p.id === updatedPoint.id);
+if (index !== -1) {
+    points[index] = updatedPoint;
+    this.pointsSubject.next(points);
+}
+\`\`\`
+
+3. **Deleting Points**
+\`\`\`typescript
+// Inside deletePoint method
+const points = this.pointsSubject.getValue();
+const index = points.findIndex(p => p.id === pointId);
+if (index !== -1) {
+    points.splice(index, 1);
+    this.pointsSubject.next(points);
+}
+\`\`\`
+
+### State Access Methods
+
+#### Synchronous State Access
+\`\`\`typescript
+getLocalPoint(pointId: number): WayPoint | undefined {
+    return this.pointsSubject.getValue().find(p => p.id == pointId);
+}
+\`\`\`
+
+#### Asynchronous State Subscription
+\`\`\`typescript
+// Example usage in components
+this.pointService.pointsSubject.subscribe(points => {
+    // Handle points update
+});
+\`\`\`
+
+### State Management Best Practices
+
+1. **Immutable Updates**
+   - Always create new arrays when updating state
+   - Use spread operator for array modifications
+   - Never directly modify the BehaviorSubject value
+
+2. **Atomic Updates**
+   - Each state update should be atomic and complete
+   - Handle edge cases and null checks
+   - Maintain data consistency
+
+3. **State Synchronization**
+   - Coordinate with WebSocket updates
+   - Handle concurrent modifications
+   - Maintain consistency with server state
+
+4. **Error Handling**
+   - Rollback state on failed operations
+   - Maintain previous state on error
+   - Notify users of state update failures
+
+### State Flow Diagram
+
+\`\`\`mermaid
+graph TD
+    A[HTTP Request] --> B[Queue System]
+    B --> C{Update Type}
+    C -->|Point Update| D[Execute Update]
+    C -->|Content Update| E[Execute Content Update]
+    D --> F[Update BehaviorSubject]
+    E --> F
+    F --> G[Notify WebSocket]
+    G --> H[Update UI]
+\`\`\`
+
+### Example State Management Implementations
+
+#### Component Integration
+\`\`\`typescript
+@Component({
+  // ...
+})
+export class WaypointComponent implements OnInit {
+  points$: Observable<WayPoint[]>;
+
+  constructor(private pointService: PointService) {
+    this.points$ = this.pointService.pointsSubject.asObservable();
+  }
+
+  updatePoint(point: WayPoint) {
+    this.pointService.updatePoint(projectId, point).subscribe({
+      next: (updatedPoint) => {
+        // State is automatically updated via pointsSubject
+      },
+      error: (error) => {
+        // Handle error
+      }
+    });
+  }
+}
+\`\`\`
+
+#### State Change Detection
+\`\`\`typescript
+// Track state changes
+this.pointService.pointsSubject
+  .pipe(
+    distinctUntilChanged(),
+    map(points => points.length)
+  )
+  .subscribe(count => {
+    // Handle point count changes
+  });
+\`\`\`
+
+### API Operations
+
+#### Points Retrieval
+\`\`\`typescript
+getPoints(projectId: number): Observable<WayPoint[]>
+\`\`\`
+Fetches all waypoints for a specific project from the API.
+
+#### Single Point Retrieval
+\`\`\`typescript
+getPoint(projectId: number, pointId: number): Observable<WayPoint>
+\`\`\`
+Retrieves a specific waypoint by project ID and point ID.
+
+#### Point Creation
+\`\`\`typescript
+addPoint(projectId: number, point: WayPoint): Observable<WayPoint>
+\`\`\`
+Creates a new waypoint in the specified project.
+
+#### Point Updates
+\`\`\`typescript
+updatePoint(projectId: number, updatedPoint: WayPoint): Observable<WayPoint>
+\`\`\`
+Updates an existing waypoint. This method uses the queue system for managing updates.
+
+#### Coordinate Updates
+\`\`\`typescript
+updateWaypointCoords(tourId: number, updatedPoint: WayPoint): Observable<WayPoint>
+\`\`\`
+Specifically updates the coordinates (latitude and longitude) of a waypoint.
+
+#### Content Updates
+\`\`\`typescript
+updatePointContent(pointId: number, content: any, templateId: number): Observable<any>
+\`\`\`
+Updates the content of a waypoint using the queue system.
+
+#### Point Deletion
+\`\`\`typescript
+deletePoint(projectId: number, pointId: number): Observable<WayPoint>
+\`\`\`
+Removes a waypoint from the system.
+
+## Queue System Implementation
+
+The service implements a queue system for managing updates using RxJS's concatMap operator. This ensures that updates are processed sequentially and prevents race conditions.
+
+### Queue Processing
+\`\`\`typescript
+private initQueue()
+\`\`\`
+Initializes the queue system and handles:
+- Point updates
+- Content updates
+- Error handling
+- Success notifications
+
+### Queue Execution Methods
+\`\`\`typescript
+private executeUpdatePoint(projectId: number, updatedPoint: WayPoint): Observable<WayPoint>
+private executeUpdatePointContent(pointId: number, content: any, templateId: number): Observable<any>
+\`\`\`
+These methods handle the actual API calls for updates in the queue.
+
+## Error Handling
+
+The service includes a generic error handler:
+\`\`\`typescript
+private handleError<T>(operation = "operation", result?: T)
+\`\`\`
+Features:
+- Logs errors to console
+- Returns a safe fallback value
+- Maintains type safety using generics
+
+## WebSocket Integration
+The service integrates with WebSocket functionality through the WebSocketService:
+- Uses channel parameters for real-time updates
+- Maintains synchronization across clients
+
+## Best Practices
+1. Always subscribe to observables when making API calls
+2. Use the queue system for updates to prevent race conditions
+3. Handle errors appropriately using the provided error handler
+4. Maintain state consistency through the pointsSubject
+
+## Usage Example
+
+\`\`\`typescript
+// Inject the service
+constructor(private pointService: PointService) {}
+
+// Get points for a project
+this.pointService.getPoints(projectId).subscribe(
+  points => {
+    // Handle points
+  }
+);
+
+// Update a point
+this.pointService.updatePoint(projectId, updatedPoint).subscribe(
+  result => {
+    // Handle success
+  }
+);
+\`\`\``,
+      };
+
+      // Initialize
+      let currentDoc = "add-path";
+
+      // Wait for document to be fully loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+
+        // Initial content update
+        updateContent();
+
+        // Event Listeners
+        document.getElementById("nav").addEventListener("click", (e) => {
+          if (e.target.classList.contains("nav-item")) {
+            document.querySelectorAll(".nav-item").forEach((item) => {
+              item.classList.remove("active");
+            });
+            e.target.classList.add("active");
+            currentDoc = e.target.dataset.doc;
             updateContent();
-
-            // Event Listeners
-            document.getElementById('nav').addEventListener('click', (e) => {
-                if (e.target.classList.contains('nav-item')) {
-                    document.querySelectorAll('.nav-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    e.target.classList.add('active');
-                    currentDoc = e.target.dataset.doc;
-                    updateContent();
-                }
-            });
-
-            document.getElementById('search').addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                const items = document.querySelectorAll('.nav-item');
-                
-                items.forEach(item => {
-                  console.log(item.dataset.doc);
-                  
-                    const docId = item.dataset.doc;
-                    const content = docs[docId].toLowerCase();
-                    if (content.includes(query) || docId.includes(query)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
+          }
         });
 
-        function updateContent() {
-            const content = document.getElementById('content');
-            content.innerHTML = marked.parse(docs[currentDoc] || '');
-            // Highlight code blocks in the new content
-            content.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightBlock(block);
-            });
-        }
+        document.getElementById("search").addEventListener("input", (e) => {
+          const query = e.target.value.toLowerCase();
+          const items = document.querySelectorAll(".nav-item");
+
+          items.forEach((item) => {
+            console.log(item.dataset.doc);
+
+            const docId = item.dataset.doc;
+            const content = docs[docId].toLowerCase();
+            if (content.includes(query) || docId.includes(query)) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
+
+      function updateContent() {
+        const content = document.getElementById("content");
+        content.innerHTML = marked.parse(docs[currentDoc] || "");
+        // Highlight code blocks in the new content
+        content.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+      }
     </script>
   </body>
 </html>
