@@ -193,8 +193,10 @@
             <a class="nav-item" data-doc="angular_19_setup">
               Angular 19 Setup
             </a>
-            <a class="nav-item" data-doc="point-service"> Point Service (State
-              management && Queue) </a>
+            <a class="nav-item" data-doc="point_service"> Point Service (State
+              management && Queue) </a> <a class="nav-item"
+              data-doc="offlineAPiService">Offline API Service </a>
+
           </nav>
         </aside>
 
@@ -777,7 +779,7 @@ run 'npm install'
 
 These steps will ensure your local environment is correctly set up to work with the upgraded Angular 19 project.
 `,
-        "point-service": `# PointService Documentation
+        "point_service": `# PointService Documentation
 
 ## Overview
 The PointService is an Angular injectable service that manages waypoints for tours. It handles CRUD operations for waypoints, manages state using BehaviorSubjects, and implements a queue system for handling point updates.
@@ -1064,7 +1066,342 @@ this.pointService.updatePoint(projectId, updatedPoint).subscribe(
   }
 );
 \`\`\``,
-      };
+offlineAPiService :`# Generic Offline API Service Pattern Documentation
+
+## Table of Contents
+- [Overview](#overview)
+- [Implementation Patterns](#implementation-patterns)
+- [Usage Examples](#usage-examples)
+- [Advanced Features](#advanced-features)
+- [Best Practices](#best-practices)
+
+## Overview
+
+The Offline API Service pattern provides a robust solution for handling API requests in applications that need to work offline. This pattern ensures data persistence and synchronization when network connectivity is restored.
+
+## Implementation Patterns
+
+### Core Service Implementation
+
+\`\`\`typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class OfflineApiService {
+  private queuedOperations = new Map<string, QueuedOperation<any>>();
+  private isOnline = navigator.onLine;
+  private networkStatus = new BehaviorSubject<boolean>(this.isOnline);
+  
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService
+  ) {
+    this.setupNetworkListeners();
+    this.loadQueueFromStorage();
+  }
+  
+  public makeRequest<T>(
+    method: HttpMethod,
+    url: string,
+    body?: any,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+    entityType: string = "default",
+    stateUpdater?: (response: T) => void,
+    chainedOperation?: (response: T) => Observable<any>
+  ): Observable<T | { queued: boolean }> {
+    // Implementation details...
+  }
+}
+\`\`\`
+
+### Base Service Pattern
+
+\`\`\`typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class BaseEntityService<T> {
+  protected entitySubject = new BehaviorSubject<T[]>([]);
+  public entities$ = this.entitySubject.asObservable();
+
+  constructor(
+    protected offlineApiService: OfflineApiService,
+    protected baseUrl: string
+  ) {}
+
+  create(
+    entity: T,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+    entityType: string = 'entity',
+    stateUpdater?: (response: T) => void,
+    chainedOperation?: (response: T) => Observable<any>
+  ) {
+    return this.offlineApiService.makeRequest<T>(
+      'POST',
+      this.baseUrl,
+      entity,
+      params,
+      headers,
+      entityType,
+      (response: T) => {
+        this.entitySubject.next([...this.entitySubject.getValue(), response]);
+        if (stateUpdater) stateUpdater(response);
+      },
+      chainedOperation
+    );
+  }
+
+  update(
+    id: number,
+    entity: Partial<T>,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+    entityType: string = 'entity',
+    stateUpdater?: (response: T) => void,
+    chainedOperation?: (response: T) => Observable<any>
+  ) {
+    return this.offlineApiService.makeRequest<T>(
+      'PUT',
+      '{this.baseUrl}/{id}',
+      entity,
+      params,
+      headers,
+      entityType,
+      (response: T) => {
+        const entities = this.entitySubject.getValue();
+        const index = entities.findIndex((e: any) => e.id === id);
+        if (index !== -1) {
+          entities[index] = response;
+          this.entitySubject.next([...entities]);
+        }
+        if (stateUpdater) stateUpdater(response);
+      },
+      chainedOperation
+    );
+  }
+
+  delete(
+    id: number,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+    entityType: string = 'entity',
+    stateUpdater?: (response: any) => void,
+    chainedOperation?: (response: any) => Observable<any>
+  ) {
+    return this.offlineApiService.makeRequest(
+      'DELETE',
+      '{this.baseUrl}/{id}',
+      null,
+      params,
+      headers,
+      entityType,
+      (response: any) => {
+        const entities = this.entitySubject.getValue();
+        this.entitySubject.next(entities.filter((e: any) => e.id !== id));
+        if (stateUpdater) stateUpdater(response);
+      },
+      chainedOperation
+    );
+  }
+}
+\`\`\`
+
+### Specific Entity Service Pattern
+
+\`\`\`typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class EntityService extends BaseEntityService<Entity> {
+  constructor(
+    offlineApiService: OfflineApiService,
+    private webSocket: WebSocketService
+  ) {
+    super(offlineApiService, 'api/entities');
+  }
+
+  addEntity(
+    entity: Entity,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+    entityType: string = 'entity',
+    stateUpdater?: (response: Entity) => void,
+    chainedOperation?: (response: Entity) => Observable<any>
+  ) {
+    const options = {
+      params: params || new HttpParams().set('channel', this.webSocket.channel)
+    };
+
+    return this.create(
+      entity,
+      options.params,
+      headers,
+      entityType,
+      stateUpdater,
+      chainedOperation
+    );
+  }
+}
+\`\`\`
+
+### Component Implementation Pattern
+
+\`\`\`typescript
+@Component({
+  selector: 'app-entity-manager',
+  template: '...'
+})
+export class EntityManagerComponent {
+  constructor(
+    private entityService: EntityService,
+    private toastr: ToastrService
+  ) {}
+
+  private addEntity(
+    entity: Entity,
+    entityType: string,
+    additionalCheck?: boolean
+  ) {
+    this.entityService
+      .addEntity(
+        entity,
+        undefined,
+        undefined,
+        'entity',
+        undefined,
+        (response: Entity) => {
+          if (response?.id) {
+            this.toastr.success('entity-added-successfully');
+            return this.entityService.addAdditionalInfo(response).pipe(
+              tap(() => {
+                if (additionalCheck) {
+                  this.performAdditionalAction();
+                }
+              })
+            );
+          } else {
+            throw new Error('Entity creation failed');
+          }
+        }
+      )
+      .subscribe({
+        next: () => {
+          this.disableAdd = false;
+        },
+        error: (err) => {
+          this.disableAdd = false;
+          this.toastr.error('Error: {err.message || 'Failed to add entity'}');
+        }
+      });
+  }
+}
+\`\`\`
+
+## Usage Examples
+
+### Basic CRUD Operations
+
+\`\`\`typescript
+// Create
+this.entityService.create(newEntity).subscribe();
+
+// Read
+this.entityService.entities$.subscribe(entities => {
+  this.entities = entities;
+});
+
+// Update
+this.entityService.update(id, updatedEntity).subscribe();
+
+// Delete
+this.entityService.delete(id).subscribe();
+\`\`\`
+
+### Advanced Operations with Chaining
+
+\`\`\`typescript
+this.entityService.create(
+  newEntity,
+  undefined,
+  undefined,
+  'entity',
+  (response: Entity) => {
+    // Update local state
+    this.currentEntity = response;
+  },
+  (response: Entity) => {
+    // Chain another operation
+    return this.entityService.addRelatedInfo(response);
+  }
+).subscribe({
+  next: () => this.handleSuccess(),
+  error: (err) => this.handleError(err)
+});
+\`\`\`
+
+## Advanced Features
+
+### Offline Queue Management
+
+\`\`\`typescript
+// Check queue status
+const hasPending = this.offlineApiService.hasPendingOperations();
+
+// Get queue count
+const pendingCount = this.offlineApiService.getPendingOperationsCount();
+
+// Force process queue
+this.offlineApiService.forceProcessQueue();
+
+// Clear queue
+this.offlineApiService.clearQueue();
+\`\`\`
+
+### Network Status Monitoring
+
+\`\`\`typescript
+this.offlineApiService.getNetworkStatus().subscribe(
+  isOnline => {
+    if (isOnline) {
+      this.handleOnlineStatus();
+    } else {
+      this.handleOfflineStatus();
+    }
+  }
+);
+\`\`\`
+
+## Best Practices
+
+1. **State Management**
+   - Always use BehaviorSubject for local state
+   - Update state in stateUpdater callbacks
+   - Handle edge cases in state updates
+
+2. **Error Handling**
+   - Implement comprehensive error handling
+   - Use appropriate error messages
+   - Clean up UI states in error callbacks
+
+3. **Offline Operations**
+   - Test offline scenarios thoroughly
+   - Implement proper queue management
+   - Handle synchronization conflicts
+
+4. **Performance**
+   - Optimize queue processing
+   - Implement proper debouncing
+   - Handle large datasets efficiently
+
+5. **Security**
+   - Implement proper authentication
+   - Secure sensitive data in storage
+   - Handle token expiration`
+
+
+};
 
       // Initialize
       let currentDoc = "add-path";
